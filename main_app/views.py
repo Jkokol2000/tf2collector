@@ -13,4 +13,6 @@ def items_index(request):
   return render(request, 'items/index.html', {
     'items': items
   })
-  
+def items_detail(request, item_id):
+    item = Item.objects.get(id=item_id)
+    return render(request, 'items/details.html', { 'item' : item})

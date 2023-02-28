@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Item Details</h1>
+<h2>{{item.name}}</h2>
+<p>Quality: {{item.quality}}</p>
+<p>Amount: {{ item.amount }}</p>
+{% if item.effect == 'None' %}
+     <p>No Effect</p>
+    {% else %}
+    <p>Effect: {{ item.effect}}</p>
+    {% endif %}
+{% endblock %}
