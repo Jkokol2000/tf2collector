@@ -1,12 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <h1>Item Details</h1>
-<h2>{{item.name}}</h2>
-<p>Quality: {{item.quality}}</p>
-<p>Amount: {{ item.amount }}</p>
-{% if item.effect == 'None' %}
-     <p>No Effect</p>
-    {% else %}
-    <p>Effect: {{ item.effect}}</p>
-    {% endif %}
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ item.name }}</span>
+        <p>Breed: {{ item.quality }}</p>
+        <p>Description: {{ item.amount }}</p>
+        {% if item.effect == 'None' %}
+          <p>No Effect</p>
+        {% else %}
+          <p>{{ item.effect }}</p>
+        {% endif %}
+      </div>
+      <div class="card-action">
+        <a href="{% url 'item_update' item.id %}">Edit</a>
+        <a href="{% url 'item_delete' item.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <!-- New Markup Below -->
+  <div class="col s6">
+    <form action="{% url 'add_request' item.id %}" method="POST">
+        {% csrf_token %}
+        {{ request_form.as_p}}
+        <input type='submit' class="btn" value="Make Trade Request">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Date</th><th>Trade Type</th></tr>
+      </thead>
+      <tbody>
+        {% for request in item.request_set.all %}
+          <tr>
+            <td>{{request.date}}</td>
+            <td>{{request.get_trade_display}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- New Markup Above -->
+</div>
+<script>
+    const dateEl = document.getElementById('id_date');
+    // M is Materialize's global variable
+    M.Datepicker.init(dateEl, {
+      format: 'yyyy-mm-dd',
+      defaultDate: new Date(),
+      setDefaultDate: true,
+      autoClose: true
+    });
+    const selectEl = document.getElementById('id_trade');
+    M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
