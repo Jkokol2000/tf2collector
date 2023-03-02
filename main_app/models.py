@@ -7,11 +7,21 @@ TRADE = (
 )
 
 # Create your models here.
+class Player(models.Model):
+    name = models.CharField(max_length=50)
+    level = models.IntegerField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse("players_detail", kwargs={"pk": self.pk})
+
 class Item(models.Model):
     name = models.CharField(max_length=100)
     quality = models.CharField(max_length=100)
     effect = models.TextField(max_length=250)
     amount = models.IntegerField()
+    players = models.ManyToManyField(Player)
     
     def __str__(self):
         return self.name
@@ -29,6 +39,8 @@ class Request(models.Model):
         return f"{self.get_trade_display()} on {self.date}"
     class Meta:
         ordering = ['-date']
+
+
     
     
    

@@ -45,6 +45,48 @@
   </div>
   <!-- New Markup Above -->
 </div>
+<!-- This is all new markup to be added just above the <script> tag -->
+<hr>
+<div class="row">
+      <div class="">
+        <h3>Users who have a {{ item.quality }} {{ item.name }}</h3>
+        {% if item.players.count %}
+          {% for player in item.players.all %}
+            <div class="card">
+              <div class="card-content">
+                <span class="card-title">
+                  Player: {{player.name}} || Level: {{player.level}}
+                </span>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <h5>No One! Be the First!</h5>
+        {% endif %}
+      </div>
+      <!-- Available toys will come after this line -->
+      <h3>Claim Item</h3>
+      {% if players.count %}
+        {% for player in players.all %}
+        <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                Player: {{player.name}} || Level: {{player.level}}
+              </span>
+            </div>
+            <div class="card-action">
+                <form action="{% url 'assoc_player' item.id player.id %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="btn">Add</button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <h5>{{item.name}} is owned by all players</h5>
+        {% endif %}
+      </div>
+    </div>
 <script>
     const dateEl = document.getElementById('id_date');
     // M is Materialize's global variable
